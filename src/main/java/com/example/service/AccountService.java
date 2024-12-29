@@ -49,4 +49,16 @@ public class AccountService {
         return this.accRep.save(acc);
     }
 
+    /**
+     * Retrieves an account from the database if account credentials matches an account in the database 
+     * @param acc
+     * @return the account object with matching credentials. Otherwise null. 
+     */
+    public Account login(Account acc) {
+        String username = acc.getUsername();
+        String password = acc.getPassword();
+        
+        return this.accRep.findAccountByUsernameAndPassword(username, password);
+    }
+
 }

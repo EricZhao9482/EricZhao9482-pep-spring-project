@@ -1,6 +1,7 @@
 package com.example.controller;
 import org.springframework.web.bind.annotation.RestController;
 import com.example.service.*;
+// import com.azul.crs.client.Response;
 import com.example.entity.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,7 @@ import org.springframework.web.bind.annotation.*;
  * A controller that uses the Spring API. Has endpoints that handles various HTTP requests from the user.
  * These requests get passed to an adequate service class to handle operations on the database.
  */
-@RestController
+@Controller
 public class SocialMediaController {
 
     AccountService accService;
@@ -42,7 +43,7 @@ public class SocialMediaController {
      *  - username is not already taken
      *  - password is at least 4 chars long
      * These checks are handled by the account service class.
-     * @param acc
+     * @param acc from Request Body
      * @return Response Entity with the registered account and status code 200 (OK).
      *         Returns 409 (CONFLICT) if username is already taken.
      *         Retruns 400 (Client Error) for all other registration errors. 
@@ -70,4 +71,25 @@ public class SocialMediaController {
         return ResponseEntity.status(400).body(null);
     }
 
+    /**
+     * Processes login attempt. 
+     * @param account credentials from Request Body
+     * @return Login Success: Logged in account (with the ID) + Status Code 200 (OK)
+     *         Login Failure: Status Code 401 (UNAUTHORIZED)
+     */
+    @PostMapping("/login")
+    public ResponseEntity loginHandler(@RequestBody Account acc) {
+
+        //attempt login
+        Account loggedInAccount = this.accService.login(acc);
+
+        // check for successful login
+        if (loggedInAccount != null) {
+            // Status Code 200 if successful
+            return ResponseEntity.status(HttpStatus.OK).body(loggedInAccount);
+        }
+
+        // status code 401 on failure
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+    }
 }
