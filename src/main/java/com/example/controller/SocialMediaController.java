@@ -136,6 +136,22 @@ public class SocialMediaController {
     @GetMapping("/messages")
     public ResponseEntity getAllMessages() {
         List<Message> allMsgs = this.msgService.getAllMessages();
+        
+        // return status code 200 + a list of all the messages
         return ResponseEntity.status(HttpStatus.OK).body(allMsgs);
+    }
+
+
+    /**
+     * Gets message by it's ID.
+     * @param messageId
+     * @return The found message (null otherwise) in the response body + code 200 (OK)
+     */
+    @GetMapping("/messages/{messageId}")
+    public ResponseEntity getMessageById (@PathVariable Integer messageId) {
+        Message msg = this.msgService.getMessageById(messageId);
+        
+        // return status code 200 + the message if found
+        return ResponseEntity.status(HttpStatus.OK).body(msg);
     }
 }

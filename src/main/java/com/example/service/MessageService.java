@@ -43,4 +43,13 @@ public class MessageService {
     public List<Message> getAllMessages() {
         return this.msgRep.findAll();
     }
+
+    /**
+     * Calls the repository to get a message by its ID from the database
+     * @param msgId
+     * @return Message. Null if not found.
+     */
+    public Message getMessageById(Integer msgId) {
+        return this.msgRep.findMessageByMessageId(msgId);
+    }
 }
