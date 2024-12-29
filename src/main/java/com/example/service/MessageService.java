@@ -52,4 +52,27 @@ public class MessageService {
     public Message getMessageById(Integer msgId) {
         return this.msgRep.findMessageByMessageId(msgId);
     }
+
+    /**
+     * Deletes the message from the database based on it's ID. 
+     * @param msgId
+     * @return The number of affected rows after the delete.
+     */
+    public Integer deleteMessageById(Integer msgId) {
+
+        if (this.getMessageById(msgId) == null) {
+            return 0;
+        }
+
+        // in order to get the number of updated rows after the delete, we will 
+        // take the difference of messages in the table before and after the delete
+        Integer msgsBeforeDelete = this.msgRep.findAll().size();
+        
+        // execute delete
+        this.msgRep.deleteById(msgId);
+
+        Integer msgsAfterDelete = this.msgRep.findAll().size();
+
+        return msgsBeforeDelete - msgsAfterDelete;
+    }
 }

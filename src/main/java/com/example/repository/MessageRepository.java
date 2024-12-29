@@ -8,7 +8,9 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import java.util.List;
 
-public interface MessageRepository extends JpaRepository<Message, Long>{
+public interface MessageRepository extends JpaRepository<Message, Integer>{
 
     Message findMessageByMessageId(Integer messageId);
+
+    Message deleteMessageByMessageId(Integer messageId);
 }

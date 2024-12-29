@@ -130,7 +130,7 @@ public class SocialMediaController {
     }
 
     /**
-     * Gets all messages. 
+     * Gets all messages through calling the service class. 
      * @return A list off all messages in the response body + code 200 (OK)
      */
     @GetMapping("/messages")
@@ -143,7 +143,7 @@ public class SocialMediaController {
 
 
     /**
-     * Gets message by it's ID.
+     * Gets message by it's ID by calling the message service class.
      * @param messageId
      * @return The found message (null otherwise) in the response body + code 200 (OK)
      */
@@ -153,5 +153,20 @@ public class SocialMediaController {
         
         // return status code 200 + the message if found
         return ResponseEntity.status(HttpStatus.OK).body(msg);
+    }
+
+    /**
+     * Deletes message by ID by calling the message service class.
+     * @param messageId
+     * @return If message existed: number of rows affected in the response body + status 200
+     *         If message did not ever exist: empty response body + status code 200 
+     */
+    @DeleteMapping("/messages/{messageId}")
+    public ResponseEntity deleteMessageById (@PathVariable Integer messageId) {
+        Integer numOfUpdatedRows = this.msgService.deleteMessageById(messageId);
+        if (numOfUpdatedRows >= 1) {
+            return ResponseEntity.status(HttpStatus.OK).body(numOfUpdatedRows);
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(null);
     }
 }
