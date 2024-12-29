@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.*;
+import java.util.List;
 /**
  * TODO: You will need to write your own endpoints and handlers for your controller using Spring. The endpoints you will need can be
  * found in readme.md as well as the test cases. You be required to use the @GET/POST/PUT/DELETE/etc Mapping annotations
@@ -126,5 +127,15 @@ public class SocialMediaController {
         // return status code 200 and the successfully created message
         return ResponseEntity.status(HttpStatus.OK).body(createdMsg);
 
+    }
+
+    /**
+     * Gets all messages. 
+     * @return A list off all messages in the response body + code 200 (OK)
+     */
+    @GetMapping("/messages")
+    public ResponseEntity getAllMessages() {
+        List<Message> allMsgs = this.msgService.getAllMessages();
+        return ResponseEntity.status(HttpStatus.OK).body(allMsgs);
     }
 }
