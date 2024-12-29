@@ -124,7 +124,7 @@ public class SocialMediaController {
         }
 
         // return status code 200 and the successfully created message
-        return ResponseEntity.status(HttpStatus.OK).body(msg);
+        return ResponseEntity.status(HttpStatus.OK).body(createdMsg);
 
     }
 }
