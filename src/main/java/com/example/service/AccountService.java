@@ -25,6 +25,15 @@ public class AccountService {
         return (this.accRep.findAccountByUsername(username) != null);
     }
 
+    /** 
+     * Calls the repository to see if account with the given ID exists
+     * @param accountID
+     * @return boolean
+    */
+    public boolean accountIDExists (Integer accID) {
+        return (this.accRep.findAccountByAccountId(accID) != null);
+    }
+
     /**
      * Given an account, pass it to the repository and have it update the table with it.
      * Registration will fail and return null if:
@@ -57,7 +66,7 @@ public class AccountService {
     public Account login(Account acc) {
         String username = acc.getUsername();
         String password = acc.getPassword();
-        
+
         return this.accRep.findAccountByUsernameAndPassword(username, password);
     }
 

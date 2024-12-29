@@ -92,4 +92,28 @@ public class SocialMediaController {
         // status code 401 on failure
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
     }
+
+    @PostMapping("/messages")
+    public ResponseEntity createMessageHandler(@RequestBody Message msg) {
+        
+        // check if poster actually exists via ID
+        Integer postedByID = msg.getPostedBy();
+
+        // if no account with the postedBy ID exists, return status code 400
+        if (!this.accService.accountIDExists(postedByID)) {
+            return ResponseEntity.status(400).body(null);
+        }
+
+        // persist message to database
+        Message createdMsg = this.msgService.persistMessage(msg);
+
+        // if persist failed return status code 400 and exit
+        if (createdMsg == null) {
+            return ResponseEntity.status(400).body(null);
+        }
+
+        // return status code 200 and the successfully created message
+        return ResponseEntity.status(HttpStatus.OK).body(msg);
+
+    }
 }
