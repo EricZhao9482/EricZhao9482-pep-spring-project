@@ -93,6 +93,17 @@ public class SocialMediaController {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
     }
 
+    /**
+     * Handles the creation of a new message. Passes the msg body to the msgService to 
+     * handle it being updated to the table. Message creation will not be successful if:
+     *  - message text is blank
+     *  - message text length is > 255 chars
+     *  - account that the message is posted by is tied to an existing account
+     * Checks are handled by their respective service classes.
+     * @param msg
+     * @return Status code 200 (OK) + the created message. 
+     *         If message creation fails: 400 (Client Error)
+     */
     @PostMapping("/messages")
     public ResponseEntity createMessageHandler(@RequestBody Message msg) {
         
