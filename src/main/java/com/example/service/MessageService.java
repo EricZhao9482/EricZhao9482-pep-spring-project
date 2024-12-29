@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import com.example.entity.Message;
 import com.example.repository.MessageRepository;
 
+import java.util.Optional;
 import java.util.List;
 
 @Service
@@ -50,7 +51,11 @@ public class MessageService {
      * @return Message. Null if not found.
      */
     public Message getMessageById(Integer msgId) {
-        return this.msgRep.findMessageByMessageId(msgId);
+        Optional<Message> searchedMsg = this.msgRep.findById(msgId);
+        if (searchedMsg.isPresent()) {
+            return searchedMsg.get();
+        }
+        return null;
     }
 
     /**

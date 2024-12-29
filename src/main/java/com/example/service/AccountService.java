@@ -31,7 +31,7 @@ public class AccountService {
      * @return boolean
     */
     public boolean accountIDExists (Integer accID) {
-        return (this.accRep.findAccountByAccountId(accID) != null);
+        return this.accRep.findById(accID).isPresent();
     }
 
     /**

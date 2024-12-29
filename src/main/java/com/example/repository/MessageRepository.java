@@ -10,7 +10,5 @@ import java.util.List;
 
 public interface MessageRepository extends JpaRepository<Message, Integer>{
 
-    Message findMessageByMessageId(Integer messageId);
 
-    Message deleteMessageByMessageId(Integer messageId);
 }
