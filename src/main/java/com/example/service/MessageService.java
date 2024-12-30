@@ -109,4 +109,13 @@ public class MessageService {
 
         return 1;
     }
+
+    /**
+     * Calls the Repository to get all messages posted by a user given an ID
+     * @param account ID
+     * @return a list of all messages from the user 
+     */
+    public List<Message> getMessagesFromUser(Integer accId) {
+        return this.msgRep.findMessagesByPostedBy(accId);
+    }
 }

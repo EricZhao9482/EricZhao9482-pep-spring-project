@@ -188,11 +188,23 @@ public class SocialMediaController {
     public ResponseEntity updateMessageHandler(@PathVariable Integer messageId, @RequestBody Message msg) {
         String msgText = msg.getMessageText();
         Integer numOfUpdatedRows = this.msgService.updateMessageById(messageId, msgText);
-        
+
         if (numOfUpdatedRows >= 1) {
             // return code 200 and the num of updated rows (1)
             return ResponseEntity.status(HttpStatus.OK).body(numOfUpdatedRows);
         }
         return ResponseEntity.status(400).body(null);
+    }
+
+    /**
+     * Gets all messages posted by a user given an account ID.
+     * @param accountId
+     * @return a list of all retrieved messages in response entity + code 200 (OK)
+     */
+    @GetMapping("/accounts/{accountId}/messages")
+    public ResponseEntity getAllMessagesFromUserHandler(@PathVariable Integer accountId) {
+        List<Message> retrievedMsgs = this.msgService.getMessagesFromUser(accountId);
+        // return status code 200
+        return ResponseEntity.status(HttpStatus.OK).body(retrievedMsgs);
     }
 }

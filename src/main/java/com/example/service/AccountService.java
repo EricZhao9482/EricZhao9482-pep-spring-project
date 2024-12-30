@@ -70,6 +70,4 @@ public class AccountService {
         return this.accRep.findAccountByUsernameAndPassword(username, password);
     }
 
-    
-
 }
