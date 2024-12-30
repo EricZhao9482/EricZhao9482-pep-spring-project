@@ -46,7 +46,8 @@ public class MessageService {
     }
 
     /**
-     * Calls the repository to get a message by its ID from the database
+     * Calls the repository to get a message by its ID from the database.
+     * This method is called by other methods in this class to check if message exists.
      * @param msgId
      * @return Message. Null if not found.
      */
@@ -79,5 +80,33 @@ public class MessageService {
         Integer msgsAfterDelete = this.msgRep.findAll().size();
 
         return msgsBeforeDelete - msgsAfterDelete;
+    }
+
+    /**
+     * Calls the message repo to update a message in the database given an ID
+     * Message update will be successful if:
+     * - Message is not blank
+     * - Message is not over 255 chars long
+     * @param msgId
+     * @return Number of rows updated
+     */
+    public Integer updateMessageById(Integer msgId, String msgText) {
+
+        // check message text for validity 
+        if (msgText == "" || msgText == null || msgText.length() > 255)
+            return 0;
+
+        
+        // attempt to get message and make sure it exists before further editing
+        Message retrievedMsg = this.getMessageById(msgId);
+        if (retrievedMsg == null) {
+            return 0;
+        }
+
+        // update text in message and save it to the database and return 1
+        retrievedMsg.setMessageText(msgText);
+        this.msgRep.save(retrievedMsg);
+
+        return 1;
     }
 }

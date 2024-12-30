@@ -134,7 +134,7 @@ public class SocialMediaController {
      * @return A list off all messages in the response body + code 200 (OK)
      */
     @GetMapping("/messages")
-    public ResponseEntity getAllMessages() {
+    public ResponseEntity getAllMessagesHandler() {
         List<Message> allMsgs = this.msgService.getAllMessages();
         
         // return status code 200 + a list of all the messages
@@ -148,7 +148,7 @@ public class SocialMediaController {
      * @return The found message (null otherwise) in the response body + code 200 (OK)
      */
     @GetMapping("/messages/{messageId}")
-    public ResponseEntity getMessageById (@PathVariable Integer messageId) {
+    public ResponseEntity getMessageByIdHandler(@PathVariable Integer messageId) {
         Message msg = this.msgService.getMessageById(messageId);
         
         // return status code 200 + the message if found
@@ -162,11 +162,37 @@ public class SocialMediaController {
      *         If message did not ever exist: empty response body + status code 200 
      */
     @DeleteMapping("/messages/{messageId}")
-    public ResponseEntity deleteMessageById (@PathVariable Integer messageId) {
+    public ResponseEntity deleteMessageByIdHandler(@PathVariable Integer messageId) {
+        // call the service to attempt to delete the message and get back affected rows
         Integer numOfUpdatedRows = this.msgService.deleteMessageById(messageId);
         if (numOfUpdatedRows >= 1) {
+            // response status code 200 + the number of updated rows (should be 1)
             return ResponseEntity.status(HttpStatus.OK).body(numOfUpdatedRows);
         }
         return ResponseEntity.status(HttpStatus.OK).body(null);
+    }
+
+    /**
+     * Updates a message given a message ID. message contents are taken from the request body.
+     * Update will be successful if:
+     *  - Message content is not blank
+     *  - Message content is not over 255 chars long
+     *  - Message with the given ID exists
+     * Checks are handled by the message service class
+     * @param messageId
+     * @param msg (from the request body)
+     * @return Num of updated rows in response entity + code 200 (OK)
+     *         If update fails: empty response body + code 400 (CLIENT ERROR)
+     */
+    @PatchMapping("/messages/{messageId}")
+    public ResponseEntity updateMessageHandler(@PathVariable Integer messageId, @RequestBody Message msg) {
+        String msgText = msg.getMessageText();
+        Integer numOfUpdatedRows = this.msgService.updateMessageById(messageId, msgText);
+        
+        if (numOfUpdatedRows >= 1) {
+            // return code 200 and the num of updated rows (1)
+            return ResponseEntity.status(HttpStatus.OK).body(numOfUpdatedRows);
+        }
+        return ResponseEntity.status(400).body(null);
     }
 }
